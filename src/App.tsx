@@ -50,7 +50,7 @@ function App() {
 
 				return setQuestions(questionsArray);
 			});
-	}, []);
+	}, [endGame]);
 
 	const questionsComponents = questions.map((question) => {
 		return (
@@ -59,6 +59,7 @@ function App() {
 				incorrectAnswers={question.incorrectAnswers}
 				correctAnswer={question.correctAnswer}
 				key={question.id}
+				id={question.id}
 				handleClick={handleClick}
 				checkAnswersController={checkAnswersController}
 				selectedAnswer={question.selectedAnswer}
@@ -80,10 +81,13 @@ function App() {
 				input.classList.add("selected");
 				setQuestions((prevQuestions): question[] =>
 					prevQuestions.map((question: question): question => {
-						return {
-							...question,
-							selectedAnswer: input.value,
-						};
+						const QuestionComponentID = input.parentElement.id;
+						return QuestionComponentID === question.id
+							? {
+									...question,
+									selectedAnswer: input.value,
+							  }
+							: question;
 					})
 				);
 			} else {
@@ -92,47 +96,25 @@ function App() {
 		});
 	}
 
-	function checkAnswers(e: any) {
-		// Acessa os componentes Question renderizados
-		// let childNodes = e.currentTarget.parentElement.childNodes;
-		// let questionsComponents = [...childNodes];
-		// questionsComponents.pop();
-		// questionsComponents.pop();
+	function checkAnswers() {
 		setCheckAnswersController(!checkAnswersController);
-		setEndGame(!endGame);
+		checkAnswersController ? setEndGame(!endGame) : undefined;
+	}
 
-		// if (e.currentTarget.innerText === "Check answers") {
-		// 	// Mapeia os compopnentes Question para buscar a resposta que foi selecionada
-		// 	questionsComponents.map((questionComponent, questionIndex) => {
-		// 		// Acessa as respostas do componente Question
-		// 		const childNodes = questionComponent.childNodes[1].childNodes;
-		// 		const childNodesArray = [...childNodes];
+	function numRightAnswers() {
+		!checkAnswersController
+			? questionsComponents.map((question) => {
+					question.props.selectedAnswer ===
+					question.props.correctAnswer
+						? setCorrectAnswersCounter(
+								(prevCorrectAnswerController) =>
+									prevCorrectAnswerController + 1
+						  )
+						: correctAnswersCounter;
+			  })
+			: correctAnswersCounter;
 
-		// 		// Verifica quais das respostas possuem a classe selected, e passa essa resposta para o array de respostas selecionadas.
-		// 		childNodesArray.map((answer) => {
-		// 			if (answer.className === "selected") {
-		// 				// Verifica se a resposta é correta e define a cor do botão de acordo
-		// 				answer.value === questions[questionIndex].correctAnswer
-		// 					? ((answer.style.backgroundColor = "#94D7A2"),
-		// 					  setCorrectAnswersCounter(
-		// 							(prevCorrectAnswersCounter) =>
-		// 								prevCorrectAnswersCounter + 1
-		// 					  ))
-		// 					: (answer.style.backgroundColor = "#F8BCBC");
-		// 			} else {
-		// 				answer.style.opacity = 0.5;
-		// 				if (
-		// 					answer.value ===
-		// 					questions[questionIndex].correctAnswer
-		// 				) {
-		// 					answer.style.backgroundColor = "#94D7A2";
-		// 				}
-		// 			}
-		// 		});
-		// 	});
-		// } else {
-		// 	setEndGame(!endGame);
-		// }
+		return correctAnswersCounter;
 	}
 
 	return (
@@ -140,7 +122,7 @@ function App() {
 			{start ? (
 				<div className="app--container">
 					{questionsComponents}
-					<h1 className="main-text">{`You scored ${correctAnswersCounter}/5 correct answers!`}</h1>
+					<h1 className="main-text">{`You scored ${numRightAnswers()}/5 correct answers!`}</h1>
 					<button
 						className="check--answers"
 						onClick={checkAnswers}

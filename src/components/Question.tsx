@@ -7,6 +7,7 @@ interface QuestionProps {
 	handleClick: (e: any) => void;
 	checkAnswersController: boolean;
 	selectedAnswer: string;
+	id: string;
 }
 
 export default function Question(props: QuestionProps): JSX.Element {
@@ -47,28 +48,27 @@ export default function Question(props: QuestionProps): JSX.Element {
 	};
 
 	const style = (resposta: string): React.CSSProperties | undefined => {
-		// se a resposta estiver selecionada e errada = wronganswer
-		// se a resposta estiver selecionada e correta = right answer
-		// se a resposta não estiver selecionada e for correta = opacity 0.5 + right answer
-		// se a resposta não estiver selecionada e for errada = opacity 0.5
-		let useStyle;
-
 		if (resposta === props.selectedAnswer) {
 			if (resposta === props.correctAnswer) {
-				useStyle = styles.rightAnswer;
+				return styles.rightAnswer;
 			} else {
-				useStyle = styles.wrongAnswer;
+				return { ...styles.wrongAnswer, opacity: 0.5 };
 			}
-		} // else {
-		// 	return styles.notSelected;
-		// }
-		return useStyle;
+		} else {
+			if (resposta === props.correctAnswer) {
+				return styles.rightAnswer;
+			}
+			return styles.notSelected;
+		}
 	};
 
 	return (
 		<div className="question--container">
 			<h1 className="main-text">{props.question}</h1>
-			<div className="answers">
+			<div
+				className="answers"
+				id={props.id}
+			>
 				<input
 					type="button"
 					value={shuffledAnswers[0]}
