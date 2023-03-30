@@ -4,27 +4,27 @@ import Question from "./components/Question";
 import he from "he";
 import { nanoid } from "nanoid";
 
+type question = {
+	correctAnswer: string;
+	incorrectAnswers: string[];
+	question: string;
+	id: string;
+	selectedAnswer: string;
+};
+
 function App() {
 	const [checkAnswersController, setCheckAnswersController] =
 		React.useState(false);
 	const [correctAnswersCounter, setCorrectAnswersCounter] = React.useState(0);
 	const [endGame, setEndGame] = React.useState(false);
 	const [start, setStart] = React.useState(false);
-	const [questions, setQuestions] = React.useState<
-		[
-			{
-				correctAnswer: string;
-				incorrectAnswers: string[];
-				question: string;
-				id: string;
-			}
-		]
-	>([
+	const [questions, setQuestions] = React.useState<question[]>([
 		{
 			correctAnswer: "",
 			incorrectAnswers: [""],
 			question: "",
 			id: "",
+			selectedAnswer: "",
 		},
 	]);
 	React.useEffect(() => {
@@ -61,6 +61,7 @@ function App() {
 				key={question.id}
 				handleClick={handleClick}
 				checkAnswersController={checkAnswersController}
+				selectedAnswer={question.selectedAnswer}
 			/>
 		);
 	});
@@ -77,6 +78,14 @@ function App() {
 			if (input.value === e.currentTarget.value) {
 				input.style.backgroundColor = "#D6DBF5";
 				input.classList.add("selected");
+				setQuestions((prevQuestions): question[] =>
+					prevQuestions.map((question: question): question => {
+						return {
+							...question,
+							selectedAnswer: input.value,
+						};
+					})
+				);
 			} else {
 				input.style.backgroundColor = "#f5f7fbd7";
 			}
@@ -85,44 +94,45 @@ function App() {
 
 	function checkAnswers(e: any) {
 		// Acessa os componentes Question renderizados
-		let childNodes = e.currentTarget.parentElement.childNodes;
-		let questionsComponents = [...childNodes];
-		questionsComponents.pop();
-		questionsComponents.pop();
+		// let childNodes = e.currentTarget.parentElement.childNodes;
+		// let questionsComponents = [...childNodes];
+		// questionsComponents.pop();
+		// questionsComponents.pop();
 		setCheckAnswersController(!checkAnswersController);
+		setEndGame(!endGame);
 
-		if (e.currentTarget.innerText === "Check answers") {
-			// Mapeia os compopnentes Question para buscar a resposta que foi selecionada
-			questionsComponents.map((questionComponent, questionIndex) => {
-				// Acessa as respostas do componente Question
-				const childNodes = questionComponent.childNodes[1].childNodes;
-				const childNodesArray = [...childNodes];
+		// if (e.currentTarget.innerText === "Check answers") {
+		// 	// Mapeia os compopnentes Question para buscar a resposta que foi selecionada
+		// 	questionsComponents.map((questionComponent, questionIndex) => {
+		// 		// Acessa as respostas do componente Question
+		// 		const childNodes = questionComponent.childNodes[1].childNodes;
+		// 		const childNodesArray = [...childNodes];
 
-				// Verifica quais das respostas possuem a classe selected, e passa essa resposta para o array de respostas selecionadas.
-				childNodesArray.map((answer) => {
-					if (answer.className === "selected") {
-						// Verifica se a resposta é correta e define a cor do botão de acordo
-						answer.value === questions[questionIndex].correctAnswer
-							? ((answer.style.backgroundColor = "#94D7A2"),
-							  setCorrectAnswersCounter(
-									(prevCorrectAnswersCounter) =>
-										prevCorrectAnswersCounter + 1
-							  ))
-							: (answer.style.backgroundColor = "#F8BCBC");
-					} else {
-						answer.style.opacity = 0.5;
-						if (
-							answer.value ===
-							questions[questionIndex].correctAnswer
-						) {
-							answer.style.backgroundColor = "#94D7A2";
-						}
-					}
-				});
-			});
-		} else {
-			setEndGame(!endGame);
-		}
+		// 		// Verifica quais das respostas possuem a classe selected, e passa essa resposta para o array de respostas selecionadas.
+		// 		childNodesArray.map((answer) => {
+		// 			if (answer.className === "selected") {
+		// 				// Verifica se a resposta é correta e define a cor do botão de acordo
+		// 				answer.value === questions[questionIndex].correctAnswer
+		// 					? ((answer.style.backgroundColor = "#94D7A2"),
+		// 					  setCorrectAnswersCounter(
+		// 							(prevCorrectAnswersCounter) =>
+		// 								prevCorrectAnswersCounter + 1
+		// 					  ))
+		// 					: (answer.style.backgroundColor = "#F8BCBC");
+		// 			} else {
+		// 				answer.style.opacity = 0.5;
+		// 				if (
+		// 					answer.value ===
+		// 					questions[questionIndex].correctAnswer
+		// 				) {
+		// 					answer.style.backgroundColor = "#94D7A2";
+		// 				}
+		// 			}
+		// 		});
+		// 	});
+		// } else {
+		// 	setEndGame(!endGame);
+		// }
 	}
 
 	return (

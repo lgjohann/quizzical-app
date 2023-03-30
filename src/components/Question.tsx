@@ -6,6 +6,7 @@ interface QuestionProps {
 	correctAnswer: string;
 	handleClick: (e: any) => void;
 	checkAnswersController: boolean;
+	selectedAnswer: string;
 }
 
 export default function Question(props: QuestionProps): JSX.Element {
@@ -33,6 +34,37 @@ export default function Question(props: QuestionProps): JSX.Element {
 
 	const [shuffledAnswers] = React.useState<string[]>(shuffle(answers));
 
+	const styles = {
+		wrongAnswer: {
+			backgroundColor: "#F8BCBC",
+		} as React.CSSProperties,
+		rightAnswer: {
+			backgroundColor: "#94D7A2",
+		} as React.CSSProperties,
+		notSelected: {
+			opacity: 0.5,
+		} as React.CSSProperties,
+	};
+
+	const style = (resposta: string): React.CSSProperties | undefined => {
+		// se a resposta estiver selecionada e errada = wronganswer
+		// se a resposta estiver selecionada e correta = right answer
+		// se a resposta não estiver selecionada e for correta = opacity 0.5 + right answer
+		// se a resposta não estiver selecionada e for errada = opacity 0.5
+		let useStyle;
+
+		if (resposta === props.selectedAnswer) {
+			if (resposta === props.correctAnswer) {
+				useStyle = styles.rightAnswer;
+			} else {
+				useStyle = styles.wrongAnswer;
+			}
+		} // else {
+		// 	return styles.notSelected;
+		// }
+		return useStyle;
+	};
+
 	return (
 		<div className="question--container">
 			<h1 className="main-text">{props.question}</h1>
@@ -41,9 +73,14 @@ export default function Question(props: QuestionProps): JSX.Element {
 					type="button"
 					value={shuffledAnswers[0]}
 					onClick={
-						props.checkAnswersController === false
+						!props.checkAnswersController
 							? (e) => props.handleClick(e)
 							: () => console.log("disabled")
+					}
+					style={
+						props.checkAnswersController
+							? style(shuffledAnswers[0])
+							: undefined
 					}
 				/>
 				<input
@@ -54,6 +91,11 @@ export default function Question(props: QuestionProps): JSX.Element {
 							? (e) => props.handleClick(e)
 							: () => console.log("disabled")
 					}
+					style={
+						props.checkAnswersController
+							? style(shuffledAnswers[1])
+							: undefined
+					}
 				/>
 				<input
 					type="button"
@@ -63,6 +105,11 @@ export default function Question(props: QuestionProps): JSX.Element {
 							? (e) => props.handleClick(e)
 							: () => console.log("disabled")
 					}
+					style={
+						props.checkAnswersController
+							? style(shuffledAnswers[2])
+							: undefined
+					}
 				/>
 				<input
 					type="button"
@@ -71,6 +118,11 @@ export default function Question(props: QuestionProps): JSX.Element {
 						props.checkAnswersController === false
 							? (e) => props.handleClick(e)
 							: () => console.log("disabled")
+					}
+					style={
+						props.checkAnswersController
+							? style(shuffledAnswers[3])
+							: undefined
 					}
 				/>
 			</div>
