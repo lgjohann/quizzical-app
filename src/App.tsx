@@ -97,32 +97,32 @@ function App() {
 	}
 
 	function checkAnswers() {
+		numRightAnswers();
 		setCheckAnswersController(!checkAnswersController);
-		checkAnswersController ? setEndGame(!endGame) : undefined;
+		checkAnswersController
+			? (setEndGame(!endGame), setCorrectAnswersCounter(0))
+			: undefined;
 	}
 
 	function numRightAnswers() {
-		!checkAnswersController
-			? questionsComponents.map((question) => {
-					question.props.selectedAnswer ===
-					question.props.correctAnswer
-						? setCorrectAnswersCounter(
-								(prevCorrectAnswerController) =>
-									prevCorrectAnswerController + 1
-						  )
-						: correctAnswersCounter;
-			  })
-			: correctAnswersCounter;
-
-		return correctAnswersCounter;
+		questionsComponents.map((question) => {
+			question.props.selectedAnswer === question.props.correctAnswer
+				? setCorrectAnswersCounter(
+						(prevCorrectAnswerController) =>
+							prevCorrectAnswerController + 1
+				  )
+				: undefined;
+		});
 	}
-
+	console.log("render");
 	return (
 		<main>
 			{start ? (
 				<div className="app--container">
 					{questionsComponents}
-					<h1 className="main-text">{`You scored ${numRightAnswers()}/5 correct answers!`}</h1>
+					<h1 className="main-text">{`You scored ${
+						checkAnswersController ? correctAnswersCounter : "0"
+					}/5 correct answers!`}</h1>
 					<button
 						className="check--answers"
 						onClick={checkAnswers}

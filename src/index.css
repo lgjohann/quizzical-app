@@ -1,17 +1,26 @@
 * {
 	box-sizing: border-box;
-	margin: 0;
+
 	font-family: "Inter", sans-serif;
 }
 
 html {
-	height: 100%;
+	
 	background-image: url(assets/blue-blob.svg), url(assets/yellow-blob.svg);
 	background-repeat: no-repeat;
 	background-position: left 100%, right 0%;
 	background-size: 110px, 270px;
 	background-color: #f5f7fbd7;
+	margin: 0;
+    padding: 0;
 }
+
+body {
+	min-height: 100vh;
+	margin: 0;
+    padding: 0;
+}
+
 
 .intro {
 	display: flex;
@@ -21,7 +30,7 @@ html {
 	align-items: center;
 	margin-left: auto;
 	margin-right: auto;
-	margin-top: 15%;
+	padding-top: 15%;
 	color: #293264;
 	font-family: "Karla", sans-serif;
 }
@@ -72,17 +81,6 @@ html {
 	font-family: "Karla", sans-serif;
 }
 
-@media only screen and (max-width: 768px) {
-	/* For mobile phones: */
-	.question {
-		margin-top: 15px;
-		font-size: 16px;
-	}
-	.html {
-		background-position: left 100vh, right 0%;
-	}
-}
-
 .answers > button {
 	border: 0.8px solid #293264;
 	padding: 6px;
@@ -94,6 +92,7 @@ html {
 	font-weight: 500;
 	text-align: center;
 	cursor: pointer;
+
 }
 
 .answers > input {
@@ -107,6 +106,8 @@ html {
 	font-weight: 500;
 	text-align: center;
 	cursor: pointer;
+	max-width: 330px;
+	white-space: normal;
 }
 
 .line {
@@ -145,3 +146,14 @@ html {
 	transform: translateY(-2px);
 }
 
+@media only screen and (max-width: 768px) {
+	/* For mobile phones: */
+	.question {
+		margin-top: 15px;
+		font-size: 16px;
+	}
+
+	.intro {
+		padding-top: 30%;
+	}
+}
