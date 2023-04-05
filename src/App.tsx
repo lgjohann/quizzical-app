@@ -126,9 +126,12 @@ function App() {
 									checkAnswersController
 										? correctAnswersCounter
 										: "0"
-							  }/5 correct answers!`
+							  }/4 correct answers!`
 							: ""}
 					</h1>
+					<h1 className="main-text">{`You scored ${
+						checkAnswersController ? correctAnswersCounter : "0"
+					}/4 correct answers!`}</h1>
 					<button
 						className="check--answers"
 						onClick={checkAnswers}
