@@ -120,9 +120,15 @@ function App() {
 			{start ? (
 				<div className="app--container">
 					{questionsComponents}
-					<h1 className="main-text">{`You scored ${
-						checkAnswersController ? correctAnswersCounter : "0"
-					}/5 correct answers!`}</h1>
+					<h1 className="main-text">
+						{checkAnswersController
+							? `You scored ${
+									checkAnswersController
+										? correctAnswersCounter
+										: "0"
+							  }/5 correct answers!`
+							: ""}
+					</h1>
 					<button
 						className="check--answers"
 						onClick={checkAnswers}
