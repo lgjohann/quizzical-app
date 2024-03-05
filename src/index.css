@@ -56,7 +56,8 @@ body {
   	cursor: pointer;
 }
 
-.intro--button:hover {
+.intro--button:hover,
+.check--answers:hover {
 	background-color: #71816D;
 	box-shadow: 0px 15px 20px #40493e;
 	color: black;
@@ -139,12 +140,7 @@ body {
   cursor: pointer;
 }
 
-.check--answers:hover {
-	background-color: #2ee59d;
-	box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
-	color: black;
-	transform: translateY(-2px);
-}
+
 
 @media only screen and (max-width: 768px) {
 	/* For mobile phones: */
