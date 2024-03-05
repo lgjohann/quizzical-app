@@ -27,6 +27,7 @@ function App() {
 			selectedAnswer: "",
 		},
 	]);
+
 	React.useEffect(() => {
 		fetch("https://opentdb.com/api.php?amount=4&type=multiple")
 			.then((response) => response.json())
@@ -114,7 +115,7 @@ function App() {
 				: undefined;
 		});
 	}
-	console.log("render");
+
 	return (
 		<main>
 			{start ? (
