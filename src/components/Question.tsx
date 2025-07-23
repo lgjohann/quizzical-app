@@ -4,9 +4,9 @@ interface QuestionProps {
 	question: string;
 	incorrectAnswers: string[];
 	correctAnswer: string;
-	handleClick: (e: any) => void;
-	checkAnswersController: boolean;
-	selectedAnswer: string;
+	handleClick: (questionId: string, answer: string) => void;
+	checkAnswersBoolean: boolean;
+	selectedAnswer: string | undefined;
 	id: string;
 }
 
@@ -39,9 +39,11 @@ export default function Question(props: QuestionProps): JSX.Element {
 		wrongAnswer: {
 			backgroundColor: "#F8BCBC",
 		} as React.CSSProperties,
+
 		rightAnswer: {
 			backgroundColor: "#94D7A2",
 		} as React.CSSProperties,
+
 		notSelected: {
 			opacity: 0.5,
 		} as React.CSSProperties,
@@ -69,62 +71,22 @@ export default function Question(props: QuestionProps): JSX.Element {
 				className="answers"
 				id={props.id}
 			>
-				<input
-					type="button"
-					value={shuffledAnswers[0]}
-					onClick={
-						!props.checkAnswersController
-							? (e) => props.handleClick(e)
-							: () => console.log("disabled")
-					}
-					style={
-						props.checkAnswersController
-							? style(shuffledAnswers[0])
-							: undefined
-					}
-				/>
-				<input
-					type="button"
-					value={shuffledAnswers[1]}
-					onClick={
-						props.checkAnswersController === false
-							? (e) => props.handleClick(e)
-							: () => console.log("disabled")
-					}
-					style={
-						props.checkAnswersController
-							? style(shuffledAnswers[1])
-							: undefined
-					}
-				/>
-				<input
-					type="button"
-					value={shuffledAnswers[2]}
-					onClick={
-						props.checkAnswersController === false
-							? (e) => props.handleClick(e)
-							: () => console.log("disabled")
-					}
-					style={
-						props.checkAnswersController
-							? style(shuffledAnswers[2])
-							: undefined
-					}
-				/>
-				<input
-					type="button"
-					value={shuffledAnswers[3]}
-					onClick={
-						props.checkAnswersController === false
-							? (e) => props.handleClick(e)
-							: () => console.log("disabled")
-					}
-					style={
-						props.checkAnswersController
-							? style(shuffledAnswers[3])
-							: undefined
-					}
-				/>
+				{shuffledAnswers.map((answer, idx) => (
+					<input
+						key={idx}
+						type="button"
+						value={answer}
+						onClick={() => props.handleClick(props.id, answer)}
+						disabled={props.checkAnswersBoolean}
+						style={
+							props.checkAnswersBoolean
+								? style(answer)
+								: props.selectedAnswer === answer
+								? { backgroundColor: "#D6DBF5" } 
+								: undefined
+						}
+					/>
+				))}
 			</div>
 			<hr className="line" />
 		</div>

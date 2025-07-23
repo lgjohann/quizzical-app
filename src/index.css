@@ -117,14 +117,34 @@ body {
 	transform: rotate(-0.05deg);
 }
 
-.app--container{
+.app--container {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
+.actions {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	margin: 12px;
+}
+
+.actions h1 {
+	font-size: 22px;
+}
+
+.loading {
+	display: flex;
+	text-align: center;
+	align-items: center;
+	justify-content: center;
+	margin-top: 30vh;
+}
+
 .check--answers {
-  margin-top: 20px;
+  	margin-top: 20px;
 	width: 193px;
 	height: 52px;
 	background: #424f88;
